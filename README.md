@@ -16,7 +16,8 @@ This project was originally created as a lab assignment for the ITE 304 - Web De
 
 ## Preview
 
-![Math Challenge Screenshot](screenshot.png)
+![Math-challenge](https://github.com/user-attachments/assets/1608459d-e777-40a8-902b-027755f93571)
+
 
 ## Usage
 
