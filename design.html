@@ -44,46 +44,6 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        body.dark {
-            background-color: var(--background-dark);
-            color: var(--text-dark);
-        }
-
-        body.dark .container {
-            background-color: var(--card-dark);
-            color: var(--text-dark);
-        }
-
-        body.dark input[type="text"] {
-            background-color: var(--background-dark);
-            color: var(--text-dark);
-            border-color: var(--border-dark);
-        }
-
-        body.dark button {
-            color: white;
-        }
-
-        body.dark .new-problem-btn {
-            color: var(--primary-light);
-            border-color: var(--primary-light);
-        }
-
-        body.dark .score {
-            color: var(--text-light-dark);
-        }
-
-        body.dark .title {
-            color: var(--primary-light);
-        }
-
-        body.dark .feedback-success {
-            background-color: rgba(16, 185, 129, 0.2);
-        }
-
-        body.dark .feedback-error {
-            background-color: rgba(239, 68, 68, 0.2);
-        }
 
         .container {
             width: 100%;
@@ -280,6 +240,51 @@
         .theme-toggle-icon {
             font-size: 0.8rem;
             line-height: 1;
+        }
+
+        body.dark {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark .container {
+            background-color: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark input[type="text"] {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            border-color: var(--border-dark);
+        }
+
+        body.dark button {
+            color: white;
+        }
+
+        body.dark .new-problem-btn {
+            color: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+
+        body.dark .new-problem-btn:hover {
+            color: white;
+        }
+
+        body.dark .score {
+            color: var(--text-light-dark);
+        }
+
+        body.dark .title {
+            color: var(--primary-light);
+        }
+
+        body.dark .feedback-success {
+            background-color: rgba(16, 185, 129, 0.2);
+        }
+
+        body.dark .feedback-error {
+            background-color: rgba(239, 68, 68, 0.2);
         }
 
         @keyframes pulse {
