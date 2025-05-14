@@ -18,6 +18,11 @@
             --text-light: #6b7280;
             --border: #e5e7eb;
             --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --background-dark: #1f2937;
+            --card-dark: #374151;
+            --text-dark: #f3f4f6;
+            --text-light-dark: #9ca3af;
+            --border-dark: #4b5563;
         }
 
         * {
@@ -36,6 +41,35 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
+        }
+
+        body.dark {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark .container {
+            background-color: var(--card-dark);
+            color: var(--text-dark);
+        }
+
+        body.dark input[type="text"] {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+            border-color: var(--border-dark);
+        }
+
+        body.dark button {
+            color: white;
+        }
+
+        body.dark .new-problem-btn {
+            color: var(--primary-light);
+            border-color: var(--primary-light);
+        }
+
+        body.dark .score {
+            color: var(--text-light-dark);
         }
 
         .container {
