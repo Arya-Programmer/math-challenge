@@ -1,0 +1,321 @@
+:root {
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+    --primary-dark: #4f46e5;
+    --success: #10b981;
+    --error: #ef4444;
+    --background: #f9fafb;
+    --card: #ffffff;
+    --text: #1f2937;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --background-dark: #1f2937;
+    --card-dark: #374151;
+    --text-dark: #f3f4f6;
+    --text-light-dark: #9ca3af;
+    --border-dark: #4b5563;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    background-color: var(--card);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--primary-dark);
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.problem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.problem span {
+    display: inline-block;
+    min-width: 3rem;
+    text-align: center;
+}
+
+.equals {
+    margin: 0 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1.25rem;
+    border: 2px solid var(--border);
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+input[type="text"]:focus {
+    border-color: var(--primary);
+}
+
+button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    outline: none;
+}
+
+button:hover {
+    background-color: var(--primary-dark);
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+.new-problem-btn {
+    background-color: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    margin-top: 1rem;
+    width: 100%;
+    transition: background-color 0.2s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.new-problem-btn:hover {
+    background-color: var(--primary-light);
+    color: white;
+}
+
+#feedbackDiv {
+    min-height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.feedback-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success);
+    border-left: 4px solid var(--success);
+}
+
+.feedback-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+    border-left: 4px solid var(--error);
+}
+
+.feedback-neutral {
+    background-color: transparent;
+}
+
+.score {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: var(--text-light);
+    transition: color 0.3s ease;
+}
+
+.score-value {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Theme Toggle Styles */
+.theme-toggle {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.theme-toggle-track {
+    position: relative;
+    display: inline-block;
+    width: 3.5rem;
+    height: 1.75rem;
+    border-radius: 1.75rem;
+    background-color: #cbd5e1;
+    transition: 0.3s;
+    cursor: pointer;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+body.dark .theme-toggle-track {
+    background-color: #475569;
+}
+
+.theme-toggle-thumb {
+    position: absolute;
+    top: 0.2rem;
+    left: 0.2rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fbbf24;
+}
+
+body.dark .theme-toggle-thumb {
+    left: calc(100% - 1.55rem);
+    background-color: #1f2937;
+    color: #f3f4f6;
+}
+
+.theme-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.theme-toggle-icon {
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+body.dark {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+body.dark .container {
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+}
+
+body.dark input[type="text"] {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+    border-color: var(--border-dark);
+}
+
+body.dark button {
+    color: white;
+}
+
+body.dark .new-problem-btn {
+    color: var(--primary-light);
+    border-color: var(--primary-light);
+}
+
+body.dark .new-problem-btn:hover {
+    color: white;
+}
+
+body.dark .score {
+    color: var(--text-light-dark);
+}
+
+body.dark .title {
+    color: var(--primary-light);
+}
+
+body.dark .feedback-success {
+    background-color: rgba(16, 185, 129, 0.2);
+}
+
+body.dark .feedback-error {
+    background-color: rgba(239, 68, 68, 0.2);
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.pulse {
+    animation: pulse 0.5s ease-in-out;
+}
+
+@media (max-width: 640px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .problem {
+        font-size: 2rem;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .theme-toggle {
+        top: 1rem;
+        right: 1rem;
+    }
+}
