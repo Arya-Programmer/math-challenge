@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Challenge</title>
+    <style type="text/css">
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --success: #10b981;
+            --error: #ef4444;
+            --background: #f9fafb;
+            --card: #ffffff;
+            --text: #1f2937;
+            --text-light: #6b7280;
+            --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--card);
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            text-align: center;
+        }
+
+        .problem {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .problem span {
+            display: inline-block;
+            min-width: 3rem;
+            text-align: center;
+        }
+
+        .equals {
+            margin: 0 1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 1.25rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+            text-align: center;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            outline: none;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .new-problem-btn {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .new-problem-btn:hover {
+            background-color: var(--primary-light);
+            color: white;
+        }
+
+        #feedbackDiv {
+            min-height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+
+        .feedback-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-left: 4px solid var(--error);
+        }
+
+        .feedback-neutral {
+            background-color: transparent;
+        }
+
+        .score {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+
+        .score-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease-in-out;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.5rem;
+            }
+
+            .problem {
+                font-size: 2rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="title">Math Challenge</h1>
+
+        <div class="problem">
+            <span id="num1Span"></span>
+            <span>+</span>
+            <span id="num2Span"></span>
+            <span class="equals">=</span>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="answerTB" placeholder="Your answer" autocomplete="off">
+            <button onclick="checkAnswer()">Check</button>
+        </div>
+
+        <div id="feedbackDiv" class="feedback-neutral"></div>
+
+        <button class="new-problem-btn" onclick="newProblem()">New Problem</button>
+
+        <div class="score">
+            Score: <span id="scoreSpan" class="score-value">0</span>
+        </div>
+    </div>
+
+    <script>
+        let num1, num2, correctAnswer;
+        let score = 0;
+
+        function newProblem() {
+            // Generate random numbers between 1 and 20
+            num1 = Math.floor(Math.random() * 100);
+            num2 = Math.floor(Math.random() * 100);
+            correctAnswer = num1 + num2;
+
+            // Display the numbers
+            document.getElementById('num1Span').textContent = num1;
+            document.getElementById('num2Span').textContent = num2;
+
+            // Clear the answer textbox and feedback
+            document.getElementById('answerTB').value = '';
+            const feedbackDiv = document.getElementById('feedbackDiv');
+            feedbackDiv.textContent = '';
+            feedbackDiv.className = 'feedback-neutral';
+
+            // Focus on the answer textbox
+            document.getElementById('answerTB').focus();
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answerTB').value);
+            const feedbackDiv = document.getElementById('feedbackDiv');
+
+            if (isNaN(userAnswer)) {
+                feedbackDiv.textContent = 'Please enter a number';
+                feedbackDiv.className = 'feedback-error';
+                return;
+            }
+
+            if (userAnswer === correctAnswer) {
+                feedbackDiv.textContent = 'Correct! Well done! 🎉';
+                feedbackDiv.className = 'feedback-success';
+                score++;
+                document.getElementById('scoreSpan').textContent = score;
+                document.getElementById('scoreSpan').classList.add('pulse');
+                setTimeout(() => {
+                    document.getElementById('scoreSpan').classList.remove('pulse');
+                }, 500);
+
+                // Generate a new problem after a short delay
+                setTimeout(newProblem, 1500);
+            } else {
+                feedbackDiv.textContent = `Incorrect. Try again! The correct answer is ${correctAnswer}.`;
+                feedbackDiv.className = 'feedback-error';
+            }
+        }
+
+        // Allow pressing Enter to check answer
+        document.getElementById('answerTB').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Initialize the first problem
+        function init() {
+            newProblem();
+            document.getElementById('scoreSpan').textContent = score;
+        }
+
+        // Call init instead of newProblem directly
+        window.onload = init;
+    </script>
+</body>
+
+</html>
