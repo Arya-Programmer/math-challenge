@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Challenge - Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="animated-background quiz-background">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <div class="container quiz-container">
+        <div class="quiz-header">
+            <button id="backButton" class="back-btn">← Back</button>
+
+            <div class="theme-toggle">
+                <label class="theme-toggle-track">
+                    <input type="checkbox" id="darkModeToggle">
+                    <span class="theme-toggle-thumb">
+                        <span class="theme-toggle-icon">☀️</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div id="timerContainer" class="timer-container hidden">
+            <div class="timer-bar">
+                <div id="timerProgress" class="timer-progress"></div>
+            </div>
+            <div id="timerText" class="timer-text">10s</div>
+        </div>
+
+        <h1 class="title">Math Challenge</h1>
+
+        <div class="problem">
+            <span id="num1Span"></span>
+            <span id="operationSpan">+</span>
+            <span id="num2Span"></span>
+            <span class="equals">=</span>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="answerTB" placeholder="Your answer" autocomplete="off">
+            <button id="checkButton">Check</button>
+        </div>
+
+        <div id="feedbackDiv" class="feedback-neutral"></div>
+
+        <button id="newProblemButton" class="new-problem-btn">New Problem</button>
+
+        <div class="stats-container">
+            <div class="score">
+                Score: <span id="scoreSpan" class="score-value">0</span>
+            </div>
+            <div class="streak">
+                Streak: <span id="streakSpan" class="streak-value">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="quiz.js"></script>
+</body>
+
+</html>
