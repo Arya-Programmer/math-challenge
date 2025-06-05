@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Challenge - Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="animated-background">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <div class="container home-container">
+        <div class="theme-toggle">
+            <label class="theme-toggle-track">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="theme-toggle-thumb">
+                    <span class="theme-toggle-icon">☀️</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="home-content">
+            <h1 class="home-title">Math Challenge</h1>
+            <p class="home-subtitle">Test your math skills with customized challenges</p>
+
+            <div class="settings-section">
+                <h2 class="settings-title">Choose Your Challenge</h2>
+
+                <div class="settings-group">
+                    <h3 class="settings-subtitle">Operations</h3>
+                    <div class="operations-grid">
+                        <div class="operation-item">
+                            <div class="operation-label">
+                                <span class="operation-symbol">+</span>
+                                <span>Addition</span>
+                            </div>
+                            <label class="operation-toggle-track active" id="additionToggle">
+                                <input type="checkbox" checked data-operation="addition">
+                                <span class="operation-toggle-thumb"></span>
+                            </label>
+                        </div>
+
+                        <div class="operation-item">
+                            <div class="operation-label">
+                                <span class="operation-symbol">−</span>
+                                <span>Subtraction</span>
+                            </div>
+                            <label class="operation-toggle-track active" id="subtractionToggle">
+                                <input type="checkbox" checked data-operation="subtraction">
+                                <span class="operation-toggle-thumb"></span>
+                            </label>
+                        </div>
+
+                        <div class="operation-item">
+                            <div class="operation-label">
+                                <span class="operation-symbol">×</span>
+                                <span>Multiplication</span>
+                            </div>
+                            <label class="operation-toggle-track active" id="multiplicationToggle">
+                                <input type="checkbox" checked data-operation="multiplication">
+                                <span class="operation-toggle-thumb"></span>
+                            </label>
+                        </div>
+
+                        <div class="operation-item">
+                            <div class="operation-label">
+                                <span class="operation-symbol">÷</span>
+                                <span>Division</span>
+                            </div>
+                            <label class="operation-toggle-track active" id="divisionToggle">
+                                <input type="checkbox" checked data-operation="division">
+                                <span class="operation-toggle-thumb"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3 class="settings-subtitle">Difficulty</h3>
+                    <div class="difficulty-selector">
+                        <button class="difficulty-btn active" data-difficulty="easy">Easy</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Medium</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+                    </div>
+                </div>
+
+                <div class="settings-group">
+                    <h3 class="settings-subtitle">Time Limit</h3>
+                    <div class="time-selector">
+                        <button class="time-btn active" data-time="0">No Limit</button>
+                        <button class="time-btn" data-time="10">10 Seconds</button>
+                        <button class="time-btn" data-time="30">30 Seconds</button>
+                        <button class="time-btn" data-time="60">60 Seconds</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="start-section">
+                <button id="startButton" class="start-btn">Start Challenge</button>
+                <p class="start-hint">or press <span class="key-hint">Enter</span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="home.js"></script>
+    <script>
+        let num1, num2, correctAnswer, currentOperation;
+        let score = 0;
+        let enabledOperations = {
+            addition: true,
+            subtraction: true,
+            multiplication: true,
+            division: true
+        };
+
+        let difficulty = 'easy';
+        let timeLimit = 0;
+
+        const operations = {
+            addition: {symbol: '+', name: 'addition'},
+            subtraction: {symbol: '−', name: 'subtraction'},
+            multiplication: {symbol: '×', name: 'multiplication'},
+            division: {symbol: '÷', name: 'division'}
+        };
+
+        function toggleOperation(operationType, checkbox) {
+            enabledOperations[operationType] = checkbox.checked;
+
+            // Update toggle appearance
+            const toggle = checkbox.parentElement;
+            if (checkbox.checked) {
+                toggle.classList.add('active');
+            } else {
+                toggle.classList.remove('active');
+            }
+
+            // Ensure at least one operation is enabled
+            const enabledCount = Object.values(enabledOperations).filter(Boolean).length;
+            if (enabledCount === 0) {
+                // Re-enable this operation if it was the last one
+                enabledOperations[operationType] = true;
+                checkbox.checked = true;
+                toggle.classList.add('active');
+
+                // Show feedback
+                const feedbackDiv = document.getElementById('feedbackDiv');
+                feedbackDiv.textContent = 'At least one operation must be selected!';
+                feedbackDiv.className = 'feedback-error';
+                setTimeout(() => {
+                    feedbackDiv.textContent = '';
+                    feedbackDiv.className = 'feedback-neutral';
+                }, 2000);
+            }
+
+            // Save preferences
+            localStorage.setItem('enabledOperations', JSON.stringify(enabledOperations));
+        }
+
+        function selectDifficulty(difficultyLevel) {
+            difficulty = difficultyLevel;
+            const buttons = document.querySelectorAll('.difficulty-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.difficulty-btn[data-difficulty="${difficulty}"]`).classList.add('active');
+
+            // Save preferences
+            localStorage.setItem('difficulty', difficulty);
+        }
+
+        function selectTimeLimit(time) {
+            timeLimit = time;
+            const buttons = document.querySelectorAll('.time-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.time-btn[data-time="${time}"]`).classList.add('active');
+
+            // Save preferences
+            localStorage.setItem('timeLimit', timeLimit);
+        }
+
+        function newProblem() {
+            // Get enabled operations
+            const availableOperations = Object.keys(enabledOperations).filter(op => enabledOperations[op]);
+
+            if (availableOperations.length === 0) {
+                return; // This shouldn't happen due to our validation
+            }
+
+            // Randomly select from enabled operations
+            const selectedOpKey = availableOperations[Math.floor(Math.random() * availableOperations.length)];
+            currentOperation = operations[selectedOpKey];
+
+            // Generate numbers based on operation type and difficulty
+            let range;
+            switch (difficulty) {
+                case 'easy':
+                    range = 50;
+                    break;
+                case 'medium':
+                    range = 100;
+                    break;
+                case 'hard':
+                    range = 200;
+                    break;
+            }
+
+            switch (currentOperation.symbol) {
+                case '+':
+                    // Addition
+                    num1 = Math.floor(Math.random() * range) + 1;
+                    num2 = Math.floor(Math.random() * range) + 1;
+                    correctAnswer = num1 + num2;
+                    break;
+
+                case '−':
+                    // Subtraction: ensure positive result
+                    num1 = Math.floor(Math.random() * range) + 20;
+                    num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
+                    correctAnswer = num1 - num2;
+                    break;
+
+                case '×':
+                    // Multiplication: smaller numbers
+                    num1 = Math.floor(Math.random() * 12) + 1;
+                    num2 = Math.floor(Math.random() * 12) + 1;
+                    correctAnswer = num1 * num2;
+                    break;
+
+                case '÷':
+                    // Division: ensure whole number result
+                    correctAnswer = Math.floor(Math.random() * 12) + 1;
+                    num2 = Math.floor(Math.random() * 12) + 1;
+                    num1 = correctAnswer * num2;
+                    break;
+            }
+
+            // Display the numbers and operation
+            document.getElementById('num1Span').textContent = num1;
+            document.getElementById('operationSpan').textContent = currentOperation.symbol;
+            document.getElementById('num2Span').textContent = num2;
+
+            // Clear the answer textbox and feedback
+            document.getElementById('answerTB').value = '';
+            const feedbackDiv = document.getElementById('feedbackDiv');
+            feedbackDiv.textContent = '';
+            feedbackDiv.className = 'feedback-neutral';
+
+            // Focus on the answer textbox
+            document.getElementById('answerTB').focus();
+        }
+
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answerTB').value);
+            const feedbackDiv = document.getElementById('feedbackDiv');
+
+            if (isNaN(userAnswer)) {
+                feedbackDiv.textContent = 'Please enter a number';
+                feedbackDiv.className = 'feedback-error';
+                return;
+            }
+
+            if (userAnswer === correctAnswer) {
+                const encouragements = [
+                    'Excellent! 🎉',
+                    'Perfect! 🌟',
+                    'Outstanding! 🚀',
+                    'Brilliant! ✨',
+                    'Amazing! 🎯',
+                    'Fantastic! 🏆'
+                ];
+                const randomEncouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
+
+                feedbackDiv.textContent = `Correct! ${randomEncouragement}`;
+                feedbackDiv.className = 'feedback-success';
+                score++;
+                document.getElementById('scoreSpan').textContent = score;
+                document.getElementById('scoreSpan').classList.add('pulse');
+                setTimeout(() => {
+                    document.getElementById('scoreSpan').classList.remove('pulse');
+                }, 500);
+
+                // Generate a new problem after a short delay
+                setTimeout(newProblem, 1500);
+            } else {
+                feedbackDiv.textContent = `Incorrect. The correct answer is ${correctAnswer}. Try the next one!`;
+                feedbackDiv.className = 'feedback-error';
+            }
+        }
+
+        // Allow pressing Enter to check answer
+        document.getElementById('answerTB').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+
+            // Update the icon based on dark mode state
+            const toggleIcon = document.querySelector('.theme-toggle-icon');
+            if (document.body.classList.contains('dark')) {
+                toggleIcon.textContent = '🌙';
+            } else {
+                toggleIcon.textContent = '☀️';
+            }
+        }
+
+        // Initialize the app
+        function init() {
+            // Restore operation preferences
+            const savedOperations = localStorage.getItem('enabledOperations');
+            if (savedOperations) {
+                enabledOperations = JSON.parse(savedOperations);
+
+                // Update UI to reflect saved preferences
+                Object.keys(enabledOperations).forEach(op => {
+                    const checkbox = document.querySelector(`#${op}Toggle input`);
+                    const toggle = document.getElementById(`${op}Toggle`);
+
+                    if (checkbox && toggle) {
+                        checkbox.checked = enabledOperations[op];
+                        if (enabledOperations[op]) {
+                            toggle.classList.add('active');
+                        } else {
+                            toggle.classList.remove('active');
+                        }
+                    }
+                });
+            }
+
+            // Restore difficulty preference
+            const savedDifficulty = localStorage.getItem('difficulty');
+            if (savedDifficulty) {
+                difficulty = savedDifficulty;
+                document.querySelector(`.difficulty-btn[data-difficulty="${difficulty}"]`).classList.add('active');
+            }
+
+            // Restore time limit preference
+            const savedTimeLimit = localStorage.getItem('timeLimit');
+            if (savedTimeLimit) {
+                timeLimit = savedTimeLimit;
+                document.querySelector(`.time-btn[data-time="${timeLimit}"]`).classList.add('active');
+            }
+
+            // Restore dark mode preference
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+                document.getElementById('darkModeToggle').checked = true;
+                document.querySelector('.theme-toggle-icon').textContent = '🌙';
+            }
+
+            // Initialize the first problem
+            newProblem();
+            document.getElementById('scoreSpan').textContent = score;
+        }
+
+        // Call init on page load
+        window.onload = init;
+
+        // Event listeners for difficulty and time limit buttons
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => selectDifficulty(btn.getAttribute('data-difficulty')));
+        });
+
+        document.querySelectorAll('.time-btn').forEach(btn => {
+            btn.addEventListener('click', () => selectTimeLimit(btn.getAttribute('data-time')));
+        });
+
+        document.getElementById('startButton').addEventListener('click', newProblem);
+    </script>
+</body>
+
+</html>
